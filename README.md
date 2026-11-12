@@ -2,7 +2,7 @@
 
 An end-to-end data analytics project simulating a real-world BFSI (Banking & Financial Services) use case: consolidating loan, risk, collections, and insurance-claims data into a single analytics layer and an interactive executive dashboard.
 
-**Live dashboard:** open [`dashboard/index.html`](dashboard/index.html) in any browser — no server required.
+**Live dashboard:** open [`dashboard/index.html`](https://ashkin2.github.io/bfsi-loan-risk-dashboard/dashboard/index.html) in any browser — no server required.
 
 ---
 
