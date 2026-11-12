@@ -1,0 +1,279 @@
+{
+  "kpi": {
+    "total_accounts": 6000.0,
+    "total_disbursed": 6129565234.7,
+    "default_rate_pct": 12.47,
+    "claim_incidence_pct": 18.13,
+    "avg_risk_score": 0.3661,
+    "collection_rate_pct": 70.32
+  },
+  "region": [
+    {
+      "region": "North",
+      "total_accounts": 1558,
+      "total_disbursed": 1654776574.17,
+      "default_rate_pct": 12.84,
+      "claim_incidence_pct": 18.23
+    },
+    {
+      "region": "South",
+      "total_accounts": 1354,
+      "total_disbursed": 1458727721.65,
+      "default_rate_pct": 11.45,
+      "claim_incidence_pct": 18.02
+    },
+    {
+      "region": "West",
+      "total_accounts": 1173,
+      "total_disbursed": 1200213888.18,
+      "default_rate_pct": 13.98,
+      "claim_incidence_pct": 18.33
+    },
+    {
+      "region": "East",
+      "total_accounts": 1061,
+      "total_disbursed": 1008890037.16,
+      "default_rate_pct": 10.84,
+      "claim_incidence_pct": 17.62
+    },
+    {
+      "region": "Central",
+      "total_accounts": 854,
+      "total_disbursed": 806957013.54,
+      "default_rate_pct": 13.35,
+      "claim_incidence_pct": 18.5
+    }
+  ],
+  "risk_tier": [
+    {
+      "risk_tier": "Low Risk",
+      "accounts": 1642,
+      "actual_default_rate_pct": 4.69
+    },
+    {
+      "risk_tier": "Medium Risk",
+      "accounts": 2944,
+      "actual_default_rate_pct": 12.81
+    },
+    {
+      "risk_tier": "High Risk",
+      "accounts": 1297,
+      "actual_default_rate_pct": 20.28
+    },
+    {
+      "risk_tier": "Critical Risk",
+      "accounts": 117,
+      "actual_default_rate_pct": 26.5
+    }
+  ],
+  "trend": [
+    {
+      "month": "2024-01",
+      "accounts_disbursed": 276,
+      "total_disbursed": 280586222.77
+    },
+    {
+      "month": "2024-02",
+      "accounts_disbursed": 263,
+      "total_disbursed": 258039715.53
+    },
+    {
+      "month": "2024-03",
+      "accounts_disbursed": 251,
+      "total_disbursed": 259846261.65
+    },
+    {
+      "month": "2024-04",
+      "accounts_disbursed": 263,
+      "total_disbursed": 290475417.54
+    },
+    {
+      "month": "2024-05",
+      "accounts_disbursed": 293,
+      "total_disbursed": 315222959.53
+    },
+    {
+      "month": "2024-06",
+      "accounts_disbursed": 239,
+      "total_disbursed": 253163177.99
+    },
+    {
+      "month": "2024-07",
+      "accounts_disbursed": 284,
+      "total_disbursed": 268503560.6
+    },
+    {
+      "month": "2024-08",
+      "accounts_disbursed": 295,
+      "total_disbursed": 288395117.79
+    },
+    {
+      "month": "2024-09",
+      "accounts_disbursed": 265,
+      "total_disbursed": 264442198.98
+    },
+    {
+      "month": "2024-10",
+      "accounts_disbursed": 283,
+      "total_disbursed": 309537061.3
+    },
+    {
+      "month": "2024-11",
+      "accounts_disbursed": 262,
+      "total_disbursed": 266543217.6
+    },
+    {
+      "month": "2024-12",
+      "accounts_disbursed": 272,
+      "total_disbursed": 268187768.27
+    },
+    {
+      "month": "2025-01",
+      "accounts_disbursed": 300,
+      "total_disbursed": 293639819.73
+    },
+    {
+      "month": "2025-02",
+      "accounts_disbursed": 252,
+      "total_disbursed": 286789278.08
+    },
+    {
+      "month": "2025-03",
+      "accounts_disbursed": 258,
+      "total_disbursed": 274953321.33
+    },
+    {
+      "month": "2025-04",
+      "accounts_disbursed": 268,
+      "total_disbursed": 312916117.81
+    },
+    {
+      "month": "2025-05",
+      "accounts_disbursed": 266,
+      "total_disbursed": 248675480.74
+    },
+    {
+      "month": "2025-06",
+      "accounts_disbursed": 291,
+      "total_disbursed": 250222981.93
+    },
+    {
+      "month": "2025-07",
+      "accounts_disbursed": 279,
+      "total_disbursed": 303462532.89
+    },
+    {
+      "month": "2025-08",
+      "accounts_disbursed": 276,
+      "total_disbursed": 283549926.3
+    },
+    {
+      "month": "2025-09",
+      "accounts_disbursed": 263,
+      "total_disbursed": 243190158.39
+    },
+    {
+      "month": "2025-10",
+      "accounts_disbursed": 301,
+      "total_disbursed": 309222937.95
+    }
+  ],
+  "loan_type": [
+    {
+      "loan_type": "Home Loan",
+      "accounts": 1085,
+      "total_disbursed": 3859120625.29
+    },
+    {
+      "loan_type": "Auto Loan",
+      "accounts": 1351,
+      "total_disbursed": 897021149.47
+    },
+    {
+      "loan_type": "Business Loan",
+      "accounts": 453,
+      "total_disbursed": 758999801.34
+    },
+    {
+      "loan_type": "Personal Loan",
+      "accounts": 1875,
+      "total_disbursed": 503367267.63
+    },
+    {
+      "loan_type": "Credit Card",
+      "accounts": 1236,
+      "total_disbursed": 111056390.97
+    }
+  ],
+  "claims": [
+    {
+      "claim_status": "Approved",
+      "claim_count": 572,
+      "avg_resolution_days": 8.6
+    },
+    {
+      "claim_status": "Rejected",
+      "claim_count": 196,
+      "avg_resolution_days": 8.5
+    },
+    {
+      "claim_status": "Under Review",
+      "claim_count": 171,
+      "avg_resolution_days": 0.0
+    },
+    {
+      "claim_status": "Pending",
+      "claim_count": 149,
+      "avg_resolution_days": 0.0
+    }
+  ],
+  "channel": [
+    {
+      "channel": "Branch",
+      "accounts": 1849,
+      "default_rate_pct": 11.68
+    },
+    {
+      "channel": "Digital App",
+      "accounts": 2055,
+      "default_rate_pct": 11.73
+    },
+    {
+      "channel": "DSA Partner",
+      "accounts": 1156,
+      "default_rate_pct": 13.67
+    },
+    {
+      "channel": "Call Center",
+      "accounts": 940,
+      "default_rate_pct": 14.15
+    }
+  ],
+  "dpd": [
+    {
+      "dpd_bucket": "Not Overdue",
+      "defaulted_accounts": 34,
+      "collection_rate_pct": 79.41
+    },
+    {
+      "dpd_bucket": "1-30 Days",
+      "defaulted_accounts": 409,
+      "collection_rate_pct": 73.84
+    },
+    {
+      "dpd_bucket": "31-60 Days",
+      "defaulted_accounts": 174,
+      "collection_rate_pct": 68.97
+    },
+    {
+      "dpd_bucket": "61-90 Days",
+      "defaulted_accounts": 79,
+      "collection_rate_pct": 64.56
+    },
+    {
+      "dpd_bucket": "90+ Days",
+      "defaulted_accounts": 52,
+      "collection_rate_pct": 50.0
+    }
+  ]
+}

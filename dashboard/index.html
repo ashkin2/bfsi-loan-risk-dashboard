@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BFSI Loan & Claims Risk Analytics Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy: #1f3864;
+    --navy-light: #2e5090;
+    --accent: #2e86de;
+    --green: #1aab6f;
+    --amber: #e0a525;
+    --red: #d64545;
+    --bg: #f4f6fa;
+    --card-bg: #ffffff;
+    --border: #e3e7ef;
+    --text: #1c2430;
+    --text-mute: #6b7686;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    background: linear-gradient(120deg, var(--navy), var(--navy-light));
+    color: white;
+    padding: 22px 32px;
+  }
+  header h1 { margin: 0; font-size: 22px; font-weight: 700; }
+  header p { margin: 4px 0 0; font-size: 13px; opacity: 0.85; }
+  .container { padding: 24px 32px 48px; max-width: 1280px; margin: 0 auto; }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    box-shadow: 0 1px 3px rgba(20,30,60,0.05);
+  }
+  .kpi-card .label {
+    font-size: 12px;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 6px;
+  }
+  .kpi-card .value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .kpi-card .sub { font-size: 11px; color: var(--text-mute); margin-top: 2px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .grid.full { grid-template-columns: 1fr; }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 3px rgba(20,30,60,0.05);
+    margin-bottom: 16px;
+  }
+  .card h3 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .card .desc { font-size: 11.5px; color: var(--text-mute); margin-bottom: 10px; }
+  canvas { max-height: 280px; }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 11.5px;
+    color: var(--text-mute);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 900px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>BFSI Loan &amp; Claims Risk Analytics Dashboard</h1>
+  <p>Portfolio risk, collections efficiency &amp; claims performance — SQL &middot; Python ETL &middot; Interactive Dashboarding</p>
+</header>
+
+<div class="container">
+
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Monthly Disbursement Trend</h3>
+      <div class="desc">Accounts disbursed and total value over time (Jan 2024 – Oct 2025)</div>
+      <canvas id="trendChart"></canvas>
+    </div>
+    <div class="card">
+      <h3>Risk Tier vs. Actual Default Rate</h3>
+      <div class="desc">Validates the risk-scoring model: higher tier should mean higher real-world default rate</div>
+      <canvas id="riskChart"></canvas>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Regional Portfolio Performance</h3>
+      <div class="desc">Disbursed value and default rate by region</div>
+      <canvas id="regionChart"></canvas>
+    </div>
+    <div class="card">
+      <h3>Loan Type Mix</h3>
+      <div class="desc">Share of total disbursed value by product</div>
+      <canvas id="loanTypeChart"></canvas>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Collections Efficiency by Days-Past-Due</h3>
+      <div class="desc">Collection rate drops sharply as accounts age past 60 days</div>
+      <canvas id="dpdChart"></canvas>
+    </div>
+    <div class="card">
+      <h3>Claims Status Breakdown</h3>
+      <div class="desc">Volume and average resolution time by claim outcome</div>
+      <canvas id="claimsChart"></canvas>
+    </div>
+  </div>
+
+  <div class="grid full">
+    <div class="card">
+      <h3>Acquisition Channel Effectiveness</h3>
+      <div class="desc">Which channel brings in the lowest-risk accounts</div>
+      <canvas id="channelChart" style="max-height:220px;"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Synthetic dataset (6,000 accounts) generated for portfolio demonstration purposes &middot;
+  Built with Python, SQL (SQLite), and Chart.js &middot;
+  <a href="https://github.com/ashkin2" target="_blank">github.com/ashkin2</a>
+</footer>
+
+<script>
+const PALETTE = {
+  navy: '#1f3864', accent: '#2e86de', green: '#1aab6f',
+  amber: '#e0a525', red: '#d64545', purple: '#8e6fc7', teal: '#2bb3a3'
+};
+const SERIES_COLORS = [PALETTE.navy, PALETTE.accent, PALETTE.green, PALETTE.amber, PALETTE.red, PALETTE.purple];
+
+Chart.defaults.font.family = "'Segoe UI', Calibri, Arial, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#4a5468';
+
+fetch('dashboard_data.json')
+  .then(r => r.json())
+  .then(data => {
+    renderKPIs(data.kpi);
+    renderTrend(data.trend);
+    renderRisk(data.risk_tier);
+    renderRegion(data.region);
+    renderLoanType(data.loan_type);
+    renderDPD(data.dpd);
+    renderClaims(data.claims);
+    renderChannel(data.channel);
+  });
+
+function fmtINR(num) {
+  if (num >= 1e7) return '₹' + (num / 1e7).toFixed(2) + ' Cr';
+  if (num >= 1e5) return '₹' + (num / 1e5).toFixed(2) + ' L';
+  return '₹' + num.toLocaleString('en-IN');
+}
+
+function renderKPIs(kpi) {
+  const cards = [
+    { label: 'Total Accounts', value: kpi.total_accounts.toLocaleString('en-IN'), sub: 'Active loan portfolio' },
+    { label: 'Total Disbursed', value: fmtINR(kpi.total_disbursed), sub: 'Across all regions' },
+    { label: 'Default Rate', value: kpi.default_rate_pct + '%', sub: 'Of total portfolio' },
+    { label: 'Collection Rate', value: kpi.collection_rate_pct + '%', sub: 'Of defaulted accounts' },
+    { label: 'Claim Incidence', value: kpi.claim_incidence_pct + '%', sub: 'Accounts with a claim' },
+  ];
+  document.getElementById('kpiRow').innerHTML = cards.map(c => `
+    <div class="kpi-card">
+      <div class="label">${c.label}</div>
+      <div class="value">${c.value}</div>
+      <div class="sub">${c.sub}</div>
+    </div>`).join('');
+}
+
+function renderTrend(trend) {
+  new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: {
+      labels: trend.map(d => d.month),
+      datasets: [{
+        label: 'Accounts Disbursed',
+        data: trend.map(d => d.accounts_disbursed),
+        borderColor: PALETTE.navy,
+        backgroundColor: 'rgba(31,56,100,0.08)',
+        fill: true, tension: 0.35, pointRadius: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { x: { ticks: { maxRotation: 60, minRotation: 60 } } }
+    }
+  });
+}
+
+function renderRisk(riskTier) {
+  new Chart(document.getElementById('riskChart'), {
+    type: 'bar',
+    data: {
+      labels: riskTier.map(d => d.risk_tier),
+      datasets: [{
+        label: 'Actual Default Rate (%)',
+        data: riskTier.map(d => d.actual_default_rate_pct),
+        backgroundColor: [PALETTE.green, PALETTE.amber, '#e08030', PALETTE.red],
+        borderRadius: 4,
+      }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } } }
+  });
+}
+
+function renderRegion(region) {
+  new Chart(document.getElementById('regionChart'), {
+    type: 'bar',
+    data: {
+      labels: region.map(d => d.region),
+      datasets: [
+        {
+          label: 'Total Disbursed (₹)',
+          data: region.map(d => d.total_disbursed),
+          backgroundColor: PALETTE.accent,
+          yAxisID: 'y',
+          borderRadius: 4,
+        },
+        {
+          label: 'Default Rate (%)',
+          data: region.map(d => d.default_rate_pct),
+          type: 'line',
+          borderColor: PALETTE.red,
+          backgroundColor: PALETTE.red,
+          yAxisID: 'y1',
+          tension: 0.3,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { position: 'left', ticks: { callback: v => fmtINR(v) } },
+        y1: { position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+}
+
+function renderLoanType(loanType) {
+  new Chart(document.getElementById('loanTypeChart'), {
+    type: 'doughnut',
+    data: {
+      labels: loanType.map(d => d.loan_type),
+      datasets: [{
+        data: loanType.map(d => d.total_disbursed),
+        backgroundColor: SERIES_COLORS,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'right', labels: { boxWidth: 12 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${fmtINR(ctx.raw)}` } }
+      }
+    }
+  });
+}
+
+function renderDPD(dpd) {
+  new Chart(document.getElementById('dpdChart'), {
+    type: 'bar',
+    data: {
+      labels: dpd.map(d => d.dpd_bucket),
+      datasets: [{
+        label: 'Collection Rate (%)',
+        data: dpd.map(d => d.collection_rate_pct),
+        backgroundColor: PALETTE.teal,
+        borderRadius: 4,
+      }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } } }
+  });
+}
+
+function renderClaims(claims) {
+  new Chart(document.getElementById('claimsChart'), {
+    type: 'bar',
+    data: {
+      labels: claims.map(d => d.claim_status),
+      datasets: [{
+        label: 'Claim Count',
+        data: claims.map(d => d.claim_count),
+        backgroundColor: [PALETTE.green, PALETTE.red, PALETTE.amber, PALETTE.accent],
+        borderRadius: 4,
+      }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } } }
+  });
+}
+
+function renderChannel(channel) {
+  new Chart(document.getElementById('channelChart'), {
+    type: 'bar',
+    data: {
+      labels: channel.map(d => d.channel),
+      datasets: [{
+        label: 'Default Rate (%)',
+        data: channel.map(d => d.default_rate_pct),
+        backgroundColor: PALETTE.purple,
+        borderRadius: 4,
+      }]
+    },
+    options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } } }
+  });
+}
+</script>
+
+</body>
+</html>
